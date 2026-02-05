@@ -149,3 +149,4 @@ dmypy.json
 # Gemini CLI
 .gemini/
 gha-creds-*.json
+kaggle-key.json

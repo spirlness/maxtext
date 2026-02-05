@@ -3,82 +3,9 @@
 # 6 layers, MoE on layers 2/4/6, 8 experts, top-2 activation
 # TinyStories dataset, 2 epochs, FP16, 2x T4 15GB
 
-set -e  # Exit on error
-set -o pipefail  # Output pip install progress
 
-echo "=== MaxText Llama3 200M MoE Training on Kaggle ==="
-echo ""
-
-# ==============================================================================
 # 1. Install Python Dependencies
 # ==============================================================================
-
-echo "Step 1: Installing Python dependencies..."
-
-pip install --upgrade pip setuptools wheel
-
-# JAX and JAX ecosystem
-pip install jax==0.4.37 jaxlib==0.4.37 -q
-pip install flax==0.9.0 optax==0.2.1
-
-# Deep learning frameworks
-pip install --upgrade tensorflow==2.16.1
-pip install --upgrade transformers[accelerate]
-
-# Data processing
-pip install --upgrade datasets grain
-pip install --download tqdm
-
-# Monitoring
-pip install --upgrade wandb
-
-# Optional: Install PyTorch for better dataset streaming performance
-pip install --upgrade torch torchvision
-
-echo "Python dependencies installed successfully!"
-echo ""
-
-# ==============================================================================
-# 2. Install MaxText
-# ==============================================================================
-
-echo "Step 2: Installing MaxText from source..."
-
-# Create setup.py if not exists (for newer MaxText versions)
-cd /kaggle/working/maxtext
-if [ ! -f "setup.py" ]; then
-    echo "Creating setup.py for PyPI-style installation..."
-    cat > setup.py << 'EOF'
-from setuptools import setup, find_packages
-
-setup(
-    name="maxtext",
-    version="0.0.1",
-    packages=find_packages(where="src"),
-    package_dir={"maxtext": "src/MaxText"},
-    install_requires=[
-        "jax>=0.4.37",
-        "jaxlib>=0.4.37",
-        "flax>=0.9.0",
-        "optax>=0.2.1",
-        "tensorflow>=2.16.1",
-        "transformers[accelerate]>=4.0.0",
-        "datasets>=2.0.0",
-        "grain>=0.3.0",
-        "wandb>=0.17.0",
-        "tqdm>=4.0.0",
-    ],
-    python_requires=">=3.10",
-)
-EOF
-fi
-
-# Install MaxText in editable mode
-pip install -e . -v
-
-echo "MaxText installed successfully!"
-cd /kaggle/working
-echo ""
 
 # ==============================================================================
 # 3. Set Environment Variables

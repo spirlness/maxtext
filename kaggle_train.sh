@@ -56,7 +56,7 @@ export PYTHONPATH="/kaggle/working/maxtext/src:$PYTHONPATH"
 
 # Run MaxText training
 # Note: Config path is relative to working directory
-python -m maxtext.train \
+python -m MaxText.train \
   --workdir=/kaggle/working \
   --config=/kaggle/working/configs/llama3_moe_200m_tinystories.yml \
   2>&1 | tee training.log
